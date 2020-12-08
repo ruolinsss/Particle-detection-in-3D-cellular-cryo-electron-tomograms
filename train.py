@@ -11,7 +11,35 @@ from utils.data_generators import DataGenerator
 
 def train(path_data,path_target,valid_data,valid_target,train_list,valid_list,model_path,
           dim=56,epoch=10,batch_size=4,mode='mask'):
+    """
+    This function trains the network.
     
+    Input
+    ----------
+        path_data: string
+            The path of the training tomogram.
+        path_target: string
+            The path of the training groundtruth.
+        valid_data: string
+            The path of the validation tomogram.
+        valid_target: string
+            The path of the validation groundtruth.
+        train_list: string
+            The path of the training particle coordinates xml file.
+        valid_list: string
+            The path of the validation particle coordinates xml file.
+        model_path: string
+            The path to save the trained model
+        dim: int
+            Patch size for training or validation.
+        epoch: int
+        batch_size: int            
+        mode: 'mask' or 'center' - default 'mask'
+            'mask': predict the mask of particle
+            'center': predict the center of particles.
+    Returns
+    -------
+    """
     training_generator = DataGenerator(path_data, path_target, train_list, mode=mode, dim=dim, batch_size=batch_size)
     validation_generator = DataGenerator(valid_data, valid_target, valid_list, mode=mode, dim=dim, batch_size=batch_size)
 

@@ -1,21 +1,18 @@
-# ============================================================================================
-# DeepFinder - a deep learning approach to localize macromolecules in cryo electron tomograms
-# ============================================================================================
-# Copyright (c) 2019 - now
-# Inria - Centre de Rennes Bretagne Atlantique, France
-# Author: Emmanuel Moebel (serpico team)
-# License: GPL v3.0. See <https://www.gnu.org/licenses/>
-# ============================================================================================
-
 from keras.layers import Input, concatenate
 from keras.models import Model
 from keras.layers.convolutional import Conv3D, MaxPooling3D, UpSampling3D
 
 def my_model(dim_in, mode = 'mask'):
     '''
-    mode: 'mask' or 'center' - default 'mask'
-          'mask': using simple UNet and dice loss to predict the mask of particles
-          'center': using simple UNet and mse loss to predict the center of particles
+    Build the training model - a simple UNet, modified from https://gitlab.inria.fr/serpico/deep-finder/-/blob/master/deepfinder/models.py#L14
+    
+    Input
+    ----------
+        dim_in: int
+            the input patch size
+        mode: 'mask' or 'center' - default 'mask'
+            'mask': using simple UNet and dice loss to predict the mask of particles
+            'center': using simple UNet and mse loss to predict the center of particles
     '''
     
     input = Input(shape=(dim_in,dim_in,dim_in,1))

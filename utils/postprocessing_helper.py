@@ -5,7 +5,6 @@ import scipy
 from skimage.morphology import remove_small_objects  
 from scipy.spatial.distance import pdist,squareform
 
-# post processing, replace the value of every foreground pixel with its local maxima (particle center) value
 def local_maxima_3D(data, order=1):
     """
     Detects local maxima in a 3D array

@@ -5,18 +5,47 @@ import keras
 from utils.utils import load_data, get_patch_position, dist_label, read_xml
 
 class DataGenerator(keras.utils.Sequence):
-    'Generates data for Keras'
+    """
+    Data Generator with real time data augmentation (180degree rotation around tilt axis) for training process. 
+
+    Input
+    ----------
+        path_data: string
+            The path of the training/validation tomogram.
+        path_target: string
+            The path of the training/validation groundtruth.
+        objlist: string
+            The path of the training/validation particle coordinates xml file.
+        mode: 'mask' or 'center' - default 'mask'
+            'mask': predict the mask of particle
+            'center': predict the center of particles.
+        batch_size: int
+        dim: int
+            Patch size for training or validation.
+        Lrnd: int
+            Random shifts applied when sampling data- and target-patches (in voxels).
+        n_channels: int
+            Channel of training tomogram.
+        augmentation: bool - default True
+            whether need real time data augmentation or not.
+        shuffle: bool - default True
+            whether to shuffle the order of training patches.
+        random_seed: bool - default False
+            whether to fix the initialization of a pseudorandom generator.
+    Returns
+    -------
+    """
     def __init__(self, path_data, path_target, objlist,
-                 mode = 'mask', batch_size=4, dim=56, Lrnd = 5, n_channels=1, augmentation_prob=True,
+                 mode = 'mask', batch_size=4, dim=56, Lrnd = 5, n_channels=1, augmentation=True,
                  shuffle=True, random_seed=False):
         'Initialization'
         self.dim = dim
         self.batch_size = batch_size
         self.n_channels = n_channels
         self.shuffle = shuffle 
-        self.augmentation = augmentation_prob
+        self.augmentation = augmentation
         self.mode = mode
-        self.Lrnd = Lrnd         #random shifts applied when sampling data- and target-patches (in voxels)
+        self.Lrnd = Lrnd        
         if random_seed == True:
             np.random.seed(1)
                 
