@@ -82,7 +82,7 @@ class DataGenerator(keras.utils.Sequence):
         target_batch = np.empty((self.batch_size, self.dim, self.dim, self.dim, 1))
         # Generate data
         for i, ID in enumerate(indexes):
-            tomoID = int(self.objlist[ID]['tomo_idx'])
+            tomoID = 0#int(self.objlist[ID]['tomo_idx'])
             tomodim = self.data[tomoID].shape
             sample_data = self.data[tomoID]
             sample_target = self.target[tomoID]

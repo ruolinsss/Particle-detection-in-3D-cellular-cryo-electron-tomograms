@@ -1,6 +1,7 @@
 import sys
 sys.path.append('../../') # add parent folder to path
 import numpy as np
+import time
 from utils.models import my_model
 from utils.utils import read_mrc,write_mrc
 
@@ -22,22 +23,21 @@ def inference(tomo_path,weights_path,dim=160):
         predArray: numpy array
             Contains predicted score maps, having the same shape as testing tomogram.
     """
-    
-    # load data and model
-    test_data = read_mrc(tomo_path)
-    test_data = (test_data - np.mean(test_data)) / np.std(test_data)  # normalize
-    test_data = np.pad(test_data, pcrop, mode='constant', constant_values=0)  # zeropad
-    test_size = test_data.shape
-    
-    model = my_model(dim, mode=mode)
-    model.load_weights(weights_path)
-    
     # Segmentation, parameters for dividing data in patches:
     pcrop = 25  # how many pixels to crop from border (net model dependent)
     poverlap = 2 * pcrop + 5 # patch overlap (in pixels) 
     l = np.int(dim / 2)
     lcrop = np.int(l - pcrop)
     step = np.int(2 * l + 1 - poverlap)
+    
+    # load data and model
+    test_data,header_dict = read_mrc(tomo_path)
+    test_data = (test_data - np.mean(test_data)) / np.std(test_data)  # normalize
+    test_data = np.pad(test_data, pcrop, mode='constant', constant_values=0)  # zeropad
+    test_size = test_data.shape
+    
+    model = my_model(dim, mode=mode)
+    model.load_weights(weights_path)
 
     # Get patch centers:
     pcenterX = list(range(l, test_size[0] - l, step))  # list() necessary for py3
@@ -72,10 +72,10 @@ def inference(tomo_path,weights_path,dim=160):
                 predArray[x - lcrop:x + lcrop, y - lcrop:y + lcrop, z - lcrop:z + lcrop] = predArray[
                                                                                               x - lcrop:x + lcrop,
                                                                                               y - lcrop:y + lcrop,
-                                                                                              z - lcrop:z + lcrop]  +                                                                                                         np.float16(pred[
+                                                                                              z - lcrop:z + lcrop]  +                                                                                                         np.float16(pred[0,
                                                                                                    l - lcrop:l + lcrop,
                                                                                                    l - lcrop:l + lcrop,
-                                                                                                   l - lcrop:l + lcrop])
+                                                                                                   l - lcrop:l + lcrop,0])
                 normArray[x - lcrop:x + lcrop, y - lcrop:y + lcrop, z - lcrop:z + lcrop] = normArray[
                                                                                            x - lcrop:x + lcrop,
                                                                                            y - lcrop:y + lcrop,
@@ -86,22 +86,24 @@ def inference(tomo_path,weights_path,dim=160):
 
     # Normalize overlaping regions:
     predArray = predArray / normArray
-    print("Model took %0.2f seconds to predict" % (end - start))
-
     predArray = predArray[pcrop:-pcrop, pcrop:-pcrop, pcrop:-pcrop]  # unpad
     
-    return predArray 
+    return predArray,header_dict
     
     
 
 if __name__=='__main__':
-    tomo_path    = '/home/haicu/ruolin.shen/DeepFinder_usage/deep-finder/spinach/Tomo17_bin4_denoised.mrc' 
-    weights_path = '/home/haicu/ruolin.shen/projects/train/results/model_dice.h5' 
+    # takes around 5 min to run
+    tomo_path    = '/home/haicu/ruolin.shen/projects/train/tomo17_re.mrc' 
+    weights_path = '/home/haicu/ruolin.shen/projects/train/results/model_cell_center.h5' 
     output_path = 'output/'
-    mode = 'mask'
+    mode = 'center'
     patch_size   = 160 # must be multiple of 4
-
-    pred = inference(tomo_path,weights_path,dim=patch_size)
-    write_mrc(pred,output_path+mode+'_pred.mrc')
+    
+    start = time.time()
+    pred, header_dict = inference(tomo_path,weights_path,dim=patch_size)
+    end = time.time()
+    print("Model took %0.2f seconds to predict" % (end - start))
+    write_mrc(pred,output_path+mode+'_pred.mrc',header_dict = header_dict)
 
 

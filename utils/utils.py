@@ -20,10 +20,19 @@ def read_mrc(filepath):
     """
     with mrcfile.open(filepath, permissive=True) as mrc:
         data = mrc.data 
+        cella = mrc.header.cella
+        cellb = mrc.header.cellb
+        origin = mrc.header.origin
+        pixel_spacing = np.array([mrc.voxel_size.x, mrc.voxel_size.y, mrc.voxel_size.z])
+        header_dict = {
+            'cella': cella,
+            'cellb': cellb,
+            'origin': origin,
+            'pixel_spacing': pixel_spacing}
    
-    return data
+    return data,header_dict
 
-def write_mrc(data, filepath):
+def write_mrc(data, filepath, header_dict=None):
     """
     This function writes data to a mrc file
     
@@ -38,6 +47,10 @@ def write_mrc(data, filepath):
     """
     with mrcfile.new(filepath, overwrite=True) as mrc:
         mrc.set_data(data)
+        if header_dict is not None:
+            mrc.header.cella = header_dict['cella']
+            mrc.header.cellb = header_dict['cellb']
+            mrc.header.origin = header_dict['origin']
 
 def write_txt(coords, filepath, voxel_size = 14.08):
     """
@@ -57,7 +70,7 @@ def write_txt(coords, filepath, voxel_size = 14.08):
     """
     with open(filepath, "w") as txtfile:
         print("PositionX    PositionY    PositionZ    VolumeX    VolumeY    VolumeZ", file=txtfile)
-        for i in range(coords.shape[0]):
+        for i in range(len(coords)):
             volumeZ,volumeY,volumeX = coords[i]
             volumeZ,volumeY,volumeX = int(volumeZ), int(volumeY), int(volumeX)
             PositionZ,PositionY,PositionX = voxel_size*volumeZ, voxel_size*volumeY, voxel_size*volumeX
@@ -142,8 +155,8 @@ def load_data(path_data, path_target):
     data_list   = []
     target_list = []
     for idx in range(0,len(path_data)):
-        data   = read_mrc(path_data[idx])
-        target = read_mrc(path_target[idx])
+        data,header_dict = read_mrc(path_data[idx])
+        target,_ = read_mrc(path_target[idx])
         
         assert data.shape == target.shape, 'Tomogram and target are not of same size!'
             

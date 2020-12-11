@@ -1,5 +1,6 @@
 from keras import backend as K
 import keras
+import tensorflow as tf
 
 def dice_coef_loss(y_true, y_pred):
     """

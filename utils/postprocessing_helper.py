@@ -62,7 +62,7 @@ def do_kdtree(maxima,pixels):
 
 def find_center(mask,center,check_center=False):
     """
-    Using predicted center to allocate pixels in mask. After this function, every particle will have a different value to solve the separation problem.
+    Using predicted center to allocate pixels in mask. After this function, every particle will have a different value to solve the separation problem. This function takes ~20 min for mask with size of (464, 928, 928).
 
     Input
     ----------
@@ -107,7 +107,7 @@ def find_center(mask,center,check_center=False):
 
 def get_center_coords(mask):
     """
-    Given instance-labelled mask (every particle has a different value), this function calculates the center coordinates of all particles. This function takes ~1 hour for mask with size of (464, 928, 928).
+    Given instance-labelled mask (every particle has a different value), this function calculates the center coordinates of all particles. This function takes ~22 min for mask with size of (464, 928, 928).
 
     Input
     ----------
@@ -120,8 +120,8 @@ def get_center_coords(mask):
             A list contains the XYZ coordinates of all particles in the mask
     """
     coords = []
-    for i in np.unique(final)[1:]:
-        volumeZ,volumeY,volumeX = np.mean(np.where(final==i),axis=-1)  # calculate the center
+    for i in np.unique(mask)[1:]:
+        volumeZ,volumeY,volumeX = np.mean(np.where(mask==i),axis=-1)  # calculate the center
         coords.append([int(volumeZ),int(volumeY),int(volumeX)])
         
     return coords
@@ -156,7 +156,7 @@ def remove_outlier(mask,coords,neighbor_number=3,distance_threshold=30):
     
     nearst_distance = np.partition(distance_matrix,neighbor_number,axis=1)[:,:neighbor_number]
     filted_mask = np.copy(mask)
-    coords_updated = coords
+    coords_updated = coords.copy()
     # check whether the dictances between one center and the nearst neighbor_number(3) centers are all smaller than distance_threshold(30). If no, considering it to be the outlier and remove it
     for i in np.where((nearst_distance>distance_threshold).any(axis=1)==True)[0]: 
         c = coords[i]
