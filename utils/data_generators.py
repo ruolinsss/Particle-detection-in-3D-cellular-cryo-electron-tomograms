@@ -6,7 +6,7 @@ from utils.utils import load_data, get_patch_position, dist_label, read_xml
 
 class DataGenerator(keras.utils.Sequence):
     """
-    Data Generator with real time data augmentation (180degree rotation around tilt axis) for training process. 
+    Data Generator with real time data augmentation (180 degree rotation around tilt axis) for training process. 
 
     Input
     ----------
@@ -89,7 +89,7 @@ class DataGenerator(keras.utils.Sequence):
             x, y, z = get_patch_position(tomodim, self.p_in, self.objlist[ID], self.Lrnd)
 
             patch_data = sample_data[z-self.p_in:z+self.p_in, y-self.p_in:y+self.p_in, x-self.p_in:x+self.p_in]
-            patch_target = sample_target[z-self.p_in:z+self.p_in, y-self.p_in:y+self.p_in, x-self.p_in:x+self.p_in]            
+            patch_target = sample_target[z-self.p_in:z+self.p_in, y-self.p_in:y+self.p_in, x-self.p_in:x+self.p_in] * 100            
             patch_data = (patch_data - np.mean(patch_data)) / np.std(patch_data)  # normalize
 
             # Data augmentation (180degree rotation around tilt axis):

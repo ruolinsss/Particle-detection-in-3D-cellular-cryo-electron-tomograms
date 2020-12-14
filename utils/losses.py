@@ -20,7 +20,7 @@ def dice_coef_loss(y_true, y_pred):
     """
     intersection = K.sum(y_true * y_pred, axis=[1,2,3,4])
     union = K.sum(y_true, axis=[1,2,3,4]) + K.sum(y_pred, axis=[1,2,3,4])
-    loss = 1 - K.mean( (2. * intersection + 1e-9) / (union + 1e-9), axis=0)
+    loss = 1 - K.mean( (2. * intersection + 1e-3) / (union + 1e-3), axis=0)
     return loss
 
 def model_loss(mode='mask'):
