@@ -19,7 +19,7 @@ The framework first uses two trained networks to predict the particle masks and 
 ## Usage:
 
 ### Train:
-<img src="https://github.com/HelmholtzAI-Consultants-Munich/Particle-detection-in-3D-cellular-cryo-electron-tomograms/blob/dev/README_files/model_structure.png" width="120">
+<img src="https://github.com/HelmholtzAI-Consultants-Munich/Particle-detection-in-3D-cellular-cryo-electron-tomograms/blob/dev/README_files/model_structure.png" width="240">
 
 ### Inference:
 ### Postprocessing:
