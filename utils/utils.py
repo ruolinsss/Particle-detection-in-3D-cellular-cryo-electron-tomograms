@@ -69,12 +69,13 @@ def write_txt(coords, filepath, voxel_size = 14.08):
     -----
     """
     with open(filepath, "w") as txtfile:
-        print("PositionX    PositionY    PositionZ    VolumeX    VolumeY    VolumeZ", file=txtfile)
+        print("PositionX\tPositionY\tPositionZ\tVolumeX\tVolumeY\tVolumeZ\tOffsetFromFace", file=txtfile)
         for i in range(len(coords)):
             volumeZ,volumeY,volumeX = coords[i]
             volumeZ,volumeY,volumeX = int(volumeZ), int(volumeY), int(volumeX)
             PositionZ,PositionY,PositionX = voxel_size*volumeZ, voxel_size*volumeY, voxel_size*volumeX
-            print(round(PositionX,2),round(PositionY,2),round(PositionZ,2),volumeX,volumeY,volumeZ, file=txtfile) 
+            print(round(PositionX,2)+"\t"+round(PositionY,2)+"\t"+round(PositionZ,2)+"\t"+  \
+                  volumeX+"\t"+volumeY+"\t"+volumeZ+"\t0.0",file=txtfile) 
 
 def read_xml(filename):
     """

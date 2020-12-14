@@ -50,6 +50,10 @@ def my_model(dim_in, mode = 'mask'):
         output = Conv3D(1, (1,1,1), padding='same', activation='sigmoid')(x)
     elif mode == 'center':
         output = Conv3D(1, (1,1,1), padding='same', activation='relu')(x)
+#         output_cell = Conv3D(1, (1,1,1), padding='same', activation='sigmoid',name='cell')(x)
+#         output_mask = Conv3D(1, (1,1,1), padding='same', activation='sigmoid',name='mask')(x)
+    
+#         model = Model(input, [output_cell,output_mask])
     else:
         raise ValueError('Mode should be either ''mask'' or ''center''')
     

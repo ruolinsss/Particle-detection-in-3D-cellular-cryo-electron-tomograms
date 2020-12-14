@@ -41,7 +41,6 @@ print("Check center function takes %0.2f seconds to run" % (end - start))
 start = time.time()
 coords = get_center_coords(processed_mask)
 end = time.time()
-print(coords)
 print("get center coords function takes %0.2f seconds to run" % (end - start))
 
 # post processing 3

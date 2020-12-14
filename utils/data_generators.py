@@ -100,6 +100,7 @@ class DataGenerator(keras.utils.Sequence):
             data_batch[i,:,:,:,0] = patch_data
         
         if self.mode == 'mask':
+            patch_target = np.where(patch_target>1,1,0)
             target_batch[i,:,:,:,0] = patch_target
             return data_batch, target_batch
         

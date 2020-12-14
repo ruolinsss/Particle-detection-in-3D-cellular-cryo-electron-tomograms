@@ -62,7 +62,7 @@ def do_kdtree(maxima,pixels):
 
 def find_center(mask,center,check_center=False):
     """
-    Using predicted center to allocate pixels in mask. After this function, every particle will have a different value to solve the separation problem. This function takes ~20 min for mask with size of (464, 928, 928).
+    Using predicted center to allocate pixels in mask. After this function, every particle will have a different value to solve the separation problem. This function takes ~20 min for mask with size of (464, 928, 928) in GPU.
 
     Input
     ----------
@@ -107,7 +107,7 @@ def find_center(mask,center,check_center=False):
 
 def get_center_coords(mask):
     """
-    Given instance-labelled mask (every particle has a different value), this function calculates the center coordinates of all particles. This function takes ~22 min for mask with size of (464, 928, 928).
+    Given instance-labelled mask (every particle has a different value), this function calculates the center coordinates of all particles. This function takes ~22 min for mask with size of (464, 928, 928) in GPU.
 
     Input
     ----------
