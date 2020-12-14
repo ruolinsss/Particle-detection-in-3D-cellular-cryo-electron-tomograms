@@ -19,7 +19,10 @@ The framework first uses two trained networks to predict the particle masks and 
 ## Usage:
 
 ### Train:
-<img src="https://github.com/HelmholtzAI-Consultants-Munich/Particle-detection-in-3D-cellular-cryo-electron-tomograms/blob/dev/README_files/model_structure.png" width="360">
+This model is a simple Unet with 2 transition down and 2 transition up block.
+<img align="right"  src="https://github.com/HelmholtzAI-Consultants-Munich/Particle-detection-in-3D-cellular-cryo-electron-tomograms/blob/dev/README_files/model_structure.png" width="360">
+
+
 
 ### Inference:
 ### Postprocessing:
