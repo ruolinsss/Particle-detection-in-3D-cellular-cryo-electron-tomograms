@@ -40,8 +40,8 @@ def train(path_data,path_target,valid_data,valid_target,train_list,valid_list,mo
     Returns
     -------
     """
-    training_generator = DataGenerator(path_data, path_target, train_list, mode=mode, dim=dim, batch_size=batch_size, shuffle=False,random_seed=True)
-    validation_generator = DataGenerator(valid_data, valid_target, valid_list, mode=mode, dim=dim, batch_size=batch_size,shuffle=False,random_seed=True)
+    training_generator = DataGenerator(path_data, path_target, train_list, mode=mode, dim=dim, batch_size=batch_size, shuffle=False)
+    validation_generator = DataGenerator(valid_data, valid_target, valid_list, mode=mode, dim=dim, batch_size=batch_size,shuffle=False)
 
     model = my_model(dim, mode = mode)
     model.summary()
@@ -76,7 +76,7 @@ if __name__=='__main__':
     
     # train mask model first
     train(path_data,path_target,valid_data,valid_target,train_list,valid_list,model_path,
-          dim=dim,epoch=5,batch_size=1,mode='mask')
+          dim=dim,epoch=5,batch_size=4,mode='mask')
     # train center model 
 #     train(path_data,path_target,valid_data,valid_target,train_list,valid_list,model_path,
 #           dim=dim,epoch=20,batch_size=4,mode='center')

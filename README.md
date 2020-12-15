@@ -8,7 +8,7 @@ The framework first uses two trained networks to predict the particle masks and 
 
 ## Installation:
 
-## Data:
+## Data decription and preprocessing:
 
 
 
@@ -26,6 +26,6 @@ This model is a simple Unet with 2 transition down and 2 transition up block.
 
 ### Inference:
 ### Postprocessing:
-### Evaluation:e
+### Evaluation:
 
 ## Results:
