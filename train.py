@@ -40,13 +40,13 @@ def train(path_data,path_target,valid_data,valid_target,train_list,valid_list,mo
     Returns
     -------
     """
-    training_generator = DataGenerator(path_data, path_target, train_list, mode=mode, dim=dim, batch_size=batch_size, shuffle=False)
-    validation_generator = DataGenerator(valid_data, valid_target, valid_list, mode=mode, dim=dim, batch_size=batch_size,shuffle=False)
+    training_generator = DataGenerator(path_data, path_target, train_list, mode=mode, dim=dim, batch_size=batch_size)
+    validation_generator = DataGenerator(valid_data, valid_target, valid_list, mode=mode, dim=dim, batch_size=batch_size)
 
     model = my_model(dim, mode = mode)
     model.summary()
-    opt = Adam(lr=0.000005, beta_1=0.95, beta_2=0.99)
-    model.compile(optimizer=opt, loss = dice_coef_loss)
+    opt = Adam(lr=0.0001, beta_1=0.95, beta_2=0.99)
+    model.compile(optimizer=opt, loss = model_loss)
 
     Early_Stopping = EarlyStopping(monitor='val_loss', patience=5, mode='auto', verbose=0)
     reduce_lr = ReduceLROnPlateau(monitor='val_loss', factor=0.2,
@@ -76,7 +76,7 @@ if __name__=='__main__':
     
     # train mask model first
     train(path_data,path_target,valid_data,valid_target,train_list,valid_list,model_path,
-          dim=dim,epoch=5,batch_size=1,mode='mask')
+          dim=dim,epoch=5,batch_size=4,mode='mask')
     # train center model 
 #     train(path_data,path_target,valid_data,valid_target,train_list,valid_list,model_path,
 #           dim=dim,epoch=20,batch_size=4,mode='center')

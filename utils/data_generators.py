@@ -54,7 +54,7 @@ class DataGenerator(keras.utils.Sequence):
         self.p_in = np.int(np.floor(dim / 2))
         
         self.len_train = len(self.objlist)
-        self.indexes = list(np.arange(0,self.len_train))
+#         self.indexes = list(np.arange(0,self.len_train))
         
         self.on_epoch_end()
 
@@ -65,6 +65,7 @@ class DataGenerator(keras.utils.Sequence):
     
     def on_epoch_end(self):
         'Updates indexes after each epoch'
+        self.indexes = list(np.arange(0,self.len_train))
         if self.shuffle == True:
             np.random.shuffle(self.indexes)
 
@@ -99,11 +100,11 @@ class DataGenerator(keras.utils.Sequence):
 
             data_batch[i,:,:,:,0] = patch_data
         
-        if self.mode == 'mask':
-            patch_target = np.where(patch_target>1,1,0)
-            target_batch[i,:,:,:,0] = patch_target
-            return data_batch, target_batch
-        
-        elif self.mode == 'center':
-            target_batch[i,:,:,:,0] = dist_label(patch_target)
-            return data_batch, target_batch
+            if self.mode == 'mask':
+                patch_target = np.where(patch_target>1,1,0)
+                target_batch[i,:,:,:,0] = patch_target
+
+            elif self.mode == 'center':
+                target_batch[i,:,:,:,0] = dist_label(patch_target)
+            
+        return data_batch, target_batch

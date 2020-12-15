@@ -30,9 +30,21 @@ This model is a simple Unet with 2 transition down and 2 transition up block.
 
 
 ### Inference:
+<img src="https://github.com/HelmholtzAI-Consultants-Munich/Particle-detection-in-3D-cellular-cryo-electron-tomograms/blob/dev/README_files/predict_result.png">
 ### Postprocessing:
+post processing choice:
+1. remove_min_size: filter out small objects
+2. check_center: for each particles, check how many centers it has. we will only split particles in mask if it has more than 2 centers.
+3. filter_outlier: filter out the outliers (there are fewer than neighbor_number neighbor particles within distance_threshold pixels)
 ### Evaluation:
-
+<img src="https://github.com/HelmholtzAI-Consultants-Munich/Particle-detection-in-3D-cellular-cryo-electron-tomograms/blob/dev/README_files/Evaluation.png">
 ## Results:
+<img src="https://github.com/HelmholtzAI-Consultants-Munich/Particle-detection-in-3D-cellular-cryo-electron-tomograms/blob/dev/README_files/Final_result.png">
 
+---------------| Precision  | Recall     | Runtime in GPU |
+---------------| ---------- | ---------- | -------------- |
+Baseline       |            |            | ~ 1h           |
+check_center   |            |            |+ ~ 20min       |
+filter_outlier |            |            |+ ~ 10min       |
+Combined       |            |            |+ ~ 30min       |
 
