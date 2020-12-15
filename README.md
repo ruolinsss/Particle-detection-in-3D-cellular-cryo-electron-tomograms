@@ -42,7 +42,7 @@ post processing choice:
 <img src="https://github.com/HelmholtzAI-Consultants-Munich/Particle-detection-in-3D-cellular-cryo-electron-tomograms/blob/dev/README_files/Evaluation.png" width="480">
 
 ## Results:
-<img src="https://github.com/HelmholtzAI-Consultants-Munich/Particle-detection-in-3D-cellular-cryo-electron-tomograms/blob/dev/README_files/Final_result.png" width="600">
+<img src="https://github.com/HelmholtzAI-Consultants-Munich/Particle-detection-in-3D-cellular-cryo-electron-tomograms/blob/dev/README_files/Final_result.png" width="1000">
 
 || Precision  | Recall     | Runtime in GPU |
 |---------------| ---------- | ---------- | -------------- |
