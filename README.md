@@ -18,6 +18,8 @@ For CenterNet, a new label is created to denote the particle centers. In the new
 
 ## Model:
 
+![image](https://github.com/HelmholtzAI-Consultants-Munich/Particle-detection-in-3D-cellular-cryo-electron-tomograms/blob/dev/README_files/framework.png)
+
 There are three optional post processing strategies:   
     
 - Post processing 1: Filter out small objects in the predicted mask. Since there will be some single or only several neighbor pixels predicted as foreground by the network by mistake, we could set the parameter remove_min_size as the minimum particle size in the groundtruth, such that all connected component in the prediction smaller than this value will be filtered out.   
@@ -28,20 +30,17 @@ There are three optional post processing strategies:
 particle does not have more than 3 neighbors, it will be counted as outlier and will be removed.
 
 
-
-![image](https://github.com/HelmholtzAI-Consultants-Munich/Particle-detection-in-3D-cellular-cryo-electron-tomograms/blob/dev/README_files/framework.png)
-
 ## Usage:
 
 ### Training:
 
 ### Testing:
 
-** Require arguments **:
+**Require arguments**:
 
 * -tomo: The path of the testing tomogram.
 
-** Optional arguments **:
+**Optional arguments**:
 
 * -m: The path of the trained SegNet model weights.
 * -c: The path of the trained CenterNet model weights.
@@ -56,7 +55,7 @@ particle does not have more than 3 neighbors, it will be counted as outlier and 
 * -nn: Define how many neighbor particles are considered in filter outlier strategy. Required when filter_outlier is True.
 * -dt: Define the distance to be considered in filter outlier strategy. Required when filter_outlier is True.
 
-** Example run **:
+**Example run**:
 
 ```
 Python end2end_framework.py -tomo './tomo.mrc'
