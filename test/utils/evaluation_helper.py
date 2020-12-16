@@ -97,10 +97,10 @@ def get_visually_evaluation(seg,gt,TP_particle,merged_particle,TP_particle_gt,me
         plot: bool - default False
             If True, two plots (evaluated prediction and evaluated groundtruth) will be saved in the save_path.
         save_path: string - default None
-            The path two plots will be saved in. Need if plot is True.
+            The path two plots will be saved in. Required if plot is True.
         axis: int - default None
             The x axis slice we want to see in the evaluated result, e.g. 230 means it plots and saves evaluated_seg[230,:,:] 
-            and evaluated_gt[230,:,:]. Need if plot is True.
+            and evaluated_gt[230,:,:]. Required if plot is True.
             
     Returns
     -------
@@ -145,10 +145,10 @@ def plot_visually_evaluation_example(evaluated_file,save_path,axis):
             Evaluated file, only have 4 values: 0 denotes background pixels, 1 denotes TP partcles, 
             2 denotes merged particles while 3 denotes FP
         save_path: string - default None
-            The path two plots will be saved in. Need if plot is True.
+            The path two plots will be saved in. Required if plot is True.
         axis: int - default None
             The x axis slice we want to see in the evaluated result, e.g. 230 means it plots and saves evaluated_seg[230,:,:] 
-            and evaluated_gt[230,:,:]. Need if plot is True.
+            and evaluated_gt[230,:,:]. Required if plot is True.
             
     Returns
     -------

@@ -1,32 +1,67 @@
-from utils.evaluation_helper import evaluation, get_visually_evaluation
-from utils.utils import read_mrc,write_mrc
-
 from skimage.measure import label
 import time
 
-path_pred = '/home/haicu/ruolin.shen/projects/train/tomo17_processed_d.mrc'
-path_target = '/home/haicu/ruolin.shen/DeepFinder_usage/deep-finder/spinach_back/labelmap1.mrc'
+from test.utils.evaluation_helper import evaluation, get_visually_evaluation
+from test.utils.utils import read_mrc,write_mrc
 
-pred,header = read_mrc(path_pred)
-gt,_ = read_mrc(path_target)
-pred_path = 'output/'
-instance_labelled = True
+def evaluation(path_pred,path_target,output_path='output/',
+               instance_labelled=True,plot=True,axis=230,write=True):
+    """
+    This function receives predicted particle file and instance labelled groundtruth to do the evaluation.
+    In more detail, particles in prediction and groundtruth are divided into 4 categories: 
+        1. Ture Positive: TP, correctly segmented particles.
+        2. Merged particles: wrongly segmented particles - several particles in groundtruth are considered as 1 object in prediction. 
+        3. False Positive: FP, no corresponding particles in the groundtruth.
+        4. False Negative:FN, missed particles in the groundtruth.
+    
+    This function could prints following quantitative evaluation results:
+        1. Precision (TP / particles in prediction)
+        2. Recall (TP / particles in groundtruth)
+        3. Merged rate (merged particle number / particles in groundtruth): since the center coordinate of each individual particle is also important in this project, this metrics is also included to check whether adjacent particles could be separated appropriately.
+    
+    This function also gives options to plot(saved) one 2d slice of the visually evaluation results or to save the whole 3d visually evaluation volume into mrc file. 
+    
+    Input
+    ----------
+        path_pred: string
+            The path of the final particle detection results.
+        path_target: string
+            The path of the groundtruth.
+        output_path: string - default 'output/'
+            The path to save the plots or the volume.
+        instance_labelled: bool - default True
+            Whether the input groundtruth is instance labelled.
+        plot: bool - default True
+            Whether user wants to save one 2d slice of the visually evaluation results.
+        axis: int - default 0.1
+            Required when plot is True. The x axis slice we want to see in the evaluated result, e.g. 230 means it plots and saves evaluated_seg[230,:,:] and evaluated_gt[230,:,:]. 
+        write: bool - default True
+            Whether user wants to save the whole 3d visually evaluation results.
+        
+    Returns
+    -------
+    """
+        
+    pred,header = read_mrc(path_pred)
+    gt,_ = read_mrc(path_target)
 
-if instance_labelled == False:
-    gt = label(gt)
+    if instance_labelled == False:
+        gt = label(gt)
 
-start = time.time()
-TP_particle, merged_particle, TP_particle_gt, merged_particle_gt = evaluation(pred, gt)
-end = time.time()
-print("evaluation function takes %0.2f seconds to run" % (end - start))
+    TP_particle, merged_particle, TP_particle_gt, merged_particle_gt = evaluation(pred, gt)
+    evaluated_tomo, evaluated_gt = get_visually_evaluation(pred,gt,
+                                                          TP_particle, merged_particle,
+                                                          TP_particle_gt, merged_particle_gt,
+                                                          plot=plot,save_path=output_path,axis=axis)
+    
+    if write == True
+        write_mrc(evaluated_tomo,output_path+'evaluated_tomo.mrc',header_dict=header)
+        write_mrc(evaluated_gt,output_path+'evaluated_gt.mrc',header_dict=header)
 
-start = time.time()
-evaluated_tomo, evaluated_gt = get_visually_evaluation(pred,gt,
-                                                      TP_particle, merged_particle,
-                                                      TP_particle_gt, merged_particle_gt,
-                                                      plot=True,save_path=pred_path,axis=230)
-end = time.time()
-print("get_visually_evaluation function takes %0.2f seconds to run" % (end - start))
-
-write_mrc(evaluated_tomo,pred_path+'evaluated_tomo.mrc',header_dict=header)
-write_mrc(evaluated_gt,pred_path+'evaluated_gt.mrc',header_dict=header)
+if __name__=='__main__':
+    
+    path_pred = '/home/haicu/ruolin.shen/projects/train/tomo17_processed_d.mrc'
+    path_target = '/home/haicu/ruolin.shen/DeepFinder_usage/deep-finder/spinach_back/labelmap1.mrc'
+    output_path = 'output/'
+    
+    pred, header_dict = evaluation(path_pred,path_target,output_path=output_path)

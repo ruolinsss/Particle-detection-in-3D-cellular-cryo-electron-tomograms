@@ -1,7 +1,7 @@
 # Particle-detection-in-3D-cellular-cryo-electron-tomograms
 
 ## What is this?
-This reporsitory provides a framework to localize and detect particles in 3D cellular cryo-electron tomography. The main contribution in this repository is to solve the challenges of high density of the particles as well as the less-accurate groundtruth. The framework detects the localization of particles and gives instance label to each particle. 
+This reporsitory provides an end to end framework to localize and detect particles in 3D cellular cryo-electron tomography. The main contribution in this repository is to solve the challenges of high density of the particles as well as the less-accurate groundtruth. The framework detects the localization of particles and gives instance label to each particle. 
  
 The framework first uses two trained networks to predict the particle masks (SegNet) and the particle centers (CenterNet), respectively. Then several post processing methods are applied to generate the instance labelled results and filter out outliers. Finally, instance labelled results in mrc file and the center coordinates of all detected particles in txt file are generated.
 
@@ -18,26 +18,61 @@ For CenterNet, a new label is created to denote the particle centers. In the new
 
 ## Model:
 
+There are three optional post processing strategies:   
+    
+Post processing 1: remove_min_size: Filter out small objects in the predicted mask. Since there will be some single or 
+                   only several pixels predicted as foreground by the network by mistake, we could set the parameter 
+                   remove_min_size as the minimum particle size in the groundtruth, such that all connected component in 
+                   the prediction smaller than this value will be filtered out.   
+
+Post processing 2: check_center: When we want to fuse the predicted masks and predicted centers, we will first find the 
+                   local maxima in each particle centers, and then consider this pixel as a 'center' of one particle, 
+                   every 'center' will have a different value. 
+                   Then there are two methods to obtain the instance labelled mask. The first one (check_center=False) 
+                   is, for every foreground pixel in the predicted mask, find the nearst predicted center and have the 
+                   same value as the center. The second one (check_center=True) is, for each particles, check how many 
+                   centers it has first. we will only split particles in mask if it has more than 2 centers. The second 
+                   method could avoid the case when some parts of one particle belongs to a center outside.
+
+Post processing 3: filter_outlier: Since we want to find the particles on the membranes, they are always dense in some 
+                   areas and will not be alone outside the membrane areas. Therefore we could filter out some alone 
+                   particles to decrease the false positve. When filter_outlier is True, we will filter particles, which 
+                   have fewer than neighbor_number nearst neighbor particles within distance_threshold pixels. For 
+                   example, with the default value, we consider two particles within 30 pixels are neighbors. If one 
+                   particle does not have more than 3 neighbors, it will be counted as outlier and will be removed.
+
+
 
 ![image](https://github.com/HelmholtzAI-Consultants-Munich/Particle-detection-in-3D-cellular-cryo-electron-tomograms/blob/dev/README_files/framework.png)
 
 ## Usage:
 
-### Train:
+### Training:
 
+### Testing:
 
+Require:
+-tomo: The path of the testing tomogram.
+Optional:
+-m: The path of the trained SegNet model weights.
+-c: The path of the trained CenterNet model weights.
+-o: The path of the saved mrc file and txt file.
+-ps: Patch size to be fed into the inference model.
+-vs: Voxel size for different dataset, e.g. 14.08 for spinach data.
+-mt: Threshold to filter the small noise in predicted mask.
+-ct: Threshold to filter the small noise in predicted center.
+-rs: Particles smaller than this size will be removed.
+-check_center: Whether to use check center strategy in the post processing.
+-filter_outlier: Whether to use filter outlier strategy in the post processing.
+-nn: Define how many neighbor particles are considered in filter outlier strategy. Required when filter_outlier is True.
+-dt: Define the distance to be considered in filter outlier strategy. Required when filter_outlier is True.
 
-
-### Inference:
+#### Inference:
 <img src="https://github.com/HelmholtzAI-Consultants-Munich/Particle-detection-in-3D-cellular-cryo-electron-tomograms/blob/dev/README_files/predict_result.png" width="480">
 
-### Postprocessing:
-post processing choice:
-1. remove_min_size: filter out small objects
-2. check_center: for each particles, check how many centers it has. we will only split particles in mask if it has more than 2 centers.
-3. filter_outlier: filter out the outliers (there are fewer than neighbor_number neighbor particles within distance_threshold pixels)
+#### Postprocessing:
 
-### Evaluation:
+#### Evaluation:
 <img src="https://github.com/HelmholtzAI-Consultants-Munich/Particle-detection-in-3D-cellular-cryo-electron-tomograms/blob/dev/README_files/Evaluation.png" width="480">
 
 ## Results:

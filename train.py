@@ -4,9 +4,9 @@ from keras.optimizers import Adam, SGD, RMSprop
 from keras.callbacks import ModelCheckpoint, EarlyStopping,CSVLogger, ReduceLROnPlateau
 from keras.models import Model
 
-from utils.models import my_model
-from utils.losses import model_loss,dice_coef_loss
-from utils.data_generators import DataGenerator
+from test.utils.models import my_model
+from test.utils.losses import model_loss,dice_coef_loss
+from test.utils.data_generators import DataGenerator
 
 
 def train(path_data,path_target,valid_data,valid_target,train_list,valid_list,model_path,
@@ -51,7 +51,7 @@ def train(path_data,path_target,valid_data,valid_target,train_list,valid_list,mo
     Early_Stopping = EarlyStopping(monitor='val_loss', patience=5, mode='auto', verbose=0)
     reduce_lr = ReduceLROnPlateau(monitor='val_loss', factor=0.2,
                                   patience=5, min_lr=0.0000001)
-    model_checkpoint = ModelCheckpoint(filepath = model_path+'/'+mode+'_model-{epoch:02d}.h5', verbose=1, save_best_only=True) 
+    model_checkpoint = ModelCheckpoint(filepath = model_path+'/'+mode+'_model.h5', verbose=1, save_best_only=True) 
     callbacks_list = [model_checkpoint, Early_Stopping,reduce_lr]
     print('begin training ...')
     model.fit_generator(generator=training_generator,
