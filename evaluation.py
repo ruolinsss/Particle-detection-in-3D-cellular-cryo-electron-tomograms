@@ -9,7 +9,7 @@ def evaluation(path_pred,path_target,output_path='output/',
     """
     This function receives predicted particle file and instance labelled groundtruth to do the evaluation.
     In more detail, particles in prediction and groundtruth are divided into 4 categories: 
-        1. Ture Positive: TP, correctly segmented particles.
+        1. True Positive: TP, correctly segmented particles.
         2. Merged particles: wrongly segmented particles - several particles in groundtruth are considered as 1 object in prediction. 
         3. False Positive: FP, no corresponding particles in the groundtruth.
         4. False Negative:FN, missed particles in the groundtruth.
