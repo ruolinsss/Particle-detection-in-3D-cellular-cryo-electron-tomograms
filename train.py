@@ -46,7 +46,7 @@ def train(path_data,path_target,valid_data,valid_target,train_list,valid_list,mo
     model = my_model(dim, mode = mode)
     model.summary()
     opt = Adam(lr=0.0001, beta_1=0.95, beta_2=0.99)
-    model.compile(optimizer=opt, loss = model_loss)
+    model.compile(optimizer=opt, loss = model_loss(mode=mode))
 
     Early_Stopping = EarlyStopping(monitor='val_loss', patience=5, mode='auto', verbose=0)
     reduce_lr = ReduceLROnPlateau(monitor='val_loss', factor=0.2,
