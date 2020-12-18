@@ -129,7 +129,12 @@ Here you could find an example 2D slice of the visually evaluation results.
 <img src="https://github.com/HelmholtzAI-Consultants-Munich/Particle-detection-in-3D-cellular-cryo-electron-tomograms/blob/dev/README_files/Evaluation.png" width="480">
 
 ## Results:
+
+Below shows one example of the final files you could get. After running ```end2end_framework.py```, you could obtain a instance labelled particle detection in mrc file (as Figure b) shows) and the center coordinates of all detected particles in txt file (as Figure d) shows). And after running ```evaluation.py```, you could also obtain an evaluated results (as Figure c) shows) using different values to denote TP, FP, FN and merged particles.
+
 <img src="https://github.com/HelmholtzAI-Consultants-Munich/Particle-detection-in-3D-cellular-cryo-electron-tomograms/blob/dev/README_files/Final_result.png" width="1000">
+
+The performance of the different post processing strategies on the test set is given here:
 
 || Precision  | Recall     | Runtime in GPU |
 |---------------| ---------- | ---------- | -------------- |
