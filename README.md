@@ -103,15 +103,15 @@ python test/postprocessing.py
 To evaluate the performance of the detected particles, please use the ```evaluation.py``` script. This can be used to compare the areas of the detected particles and the particle locations in the groundtruth.
 
 In more detail, in this function, particles in prediction and groundtruth are divided into 4 categories: 
-- 1. True Positive: TP, correctly segmented particles.
-- 2. Merged particles: wrongly segmented particles - several particles in groundtruth are considered as 1 object in prediction. 
-- 3. False Positive: FP, no corresponding particles in the groundtruth.
-- 4. False Negative:FN, missed particles in the groundtruth.
+1. True Positive: TP, correctly segmented particles.
+2. Merged particles: wrongly segmented particles - several particles in groundtruth are considered as 1 object in prediction. 
+3. False Positive: FP, no corresponding particles in the groundtruth.
+4. False Negative:FN, missed particles in the groundtruth.
     
 And then several quantitative evaluation results could be given:
-- 1. Precision (TP / particles in prediction)
-- 2. Recall (TP / particles in groundtruth)
-- 3. Merged rate (merged particle number / particles in groundtruth): since the center coordinate of each individual particle is also important in this project, this metrics is also included to check whether adjacent particles could be separated appropriately.
+1. Precision (TP / particles in prediction)
+2. Recall (TP / particles in groundtruth)
+3. Merged rate (merged particle number / particles in groundtruth): since the center coordinate of each individual particle is also important in this project, this metrics is also included to check whether adjacent particles could be separated appropriately.
     
 In addtion, to evaluate the results visually, we also give options to plot one 2d slice of the visually evaluation results or to save the whole 3d visually evaluation volume into mrc file. In these plots, TP particles have value=1 and color green, merged particles have value=2 and color yellow while FN/FP have value=3 and color red. Comparing the number of particles in different colors, user could have a feeling of how good the results are.
 
