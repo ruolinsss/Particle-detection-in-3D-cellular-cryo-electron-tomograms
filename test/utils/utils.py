@@ -17,6 +17,8 @@ def read_mrc(filepath):
     -------
         data: numpy array
             The content of the mrc file
+        header_dict: dictionary
+            The dictionary contains the head information of the mrc file
     """
     with mrcfile.open(filepath, permissive=True) as mrc:
         data = mrc.data 
@@ -42,6 +44,8 @@ def write_mrc(data, filepath, header_dict=None):
             The data for the mrc file
         filepath: string
             The path of the mrc file
+        header_dict: dictionary - default None
+            The dictionary contains the head information of the mrc file
     Returns
     -------
     """
@@ -74,8 +78,8 @@ def write_txt(coords, filepath, voxel_size = 14.08):
             volumeZ,volumeY,volumeX = coords[i]
             volumeZ,volumeY,volumeX = int(volumeZ), int(volumeY), int(volumeX)
             PositionZ,PositionY,PositionX = voxel_size*volumeZ, voxel_size*volumeY, voxel_size*volumeX
-            print(round(PositionX,2)+"\t"+round(PositionY,2)+"\t"+round(PositionZ,2)+"\t"+  \
-                  volumeX+"\t"+volumeY+"\t"+volumeZ+"\t0.0",file=txtfile) 
+            print(str(round(PositionX,2))+"\t"+str(round(PositionY,2))+"\t"+str(round(PositionZ,2))+"\t"+  \
+                  str(volumeX)+"\t"+str(volumeY)+"\t"+str(volumeZ)+"\t0.0",file=txtfile) 
 
 def read_xml(filename):
     """

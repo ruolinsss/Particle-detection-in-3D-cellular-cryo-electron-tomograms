@@ -61,13 +61,35 @@ def train(path_data,path_target,valid_data,valid_target,train_list,valid_list,mo
                         callbacks = callbacks_list)
 
 if __name__=='__main__':
+    '''
+    Following information should be given:
     
-    path_data = ['/home/haicu/ruolin.shen/DeepFinder_usage/deep-finder/spinach/Tomo32_denoised_bin4.mrc']
-    path_target = ['/home/haicu/ruolin.shen/DeepFinder_usage/deep-finder/spinach_back/labelmap0.mrc']
+    path_data: string
+        Path of the training data
+    path_target: string
+        Path of the groundtruth
+    valid_data: string
+        Path of the validation data
+    valid_target: string
+        Path of the validation groundtruth
+    train_list: string
+        Path of the xml file including information about the training data, such as particle coordinates
+    valid_list: string
+        Path of the xml file including information about the validation data, such as particle coordinates
+    model_path: sting
+        Path to save the trained model weights. 
+        Model from SegNet will be saved called ''mask_model.h5'' in the model_path.
+        Model from CenterNet will be saved called ''center_model.h5'' in the model_path.
+    dim: int
+        Training patch size    
+    '''
+        
+    path_data = ['/home/haicu/ruolin.shen/DeepFinder_usage/deep-finder/spinach/Tomo32_denoised_bin4.mrc']  
+    path_target = ['/home/haicu/ruolin.shen/DeepFinder_usage/deep-finder/spinach_back/labelmap0.mrc'] 
 
-    valid_data = ['/home/haicu/ruolin.shen/DeepFinder_usage/deep-finder/spinach/Tomo17_bin4_denoised.mrc']
+    valid_data = ['/home/haicu/ruolin.shen/DeepFinder_usage/deep-finder/spinach/Tomo17_bin4_denoised.mrc'] 
     valid_target = ['/home/haicu/ruolin.shen/DeepFinder_usage/deep-finder/spinach_back/labelmap1.mrc']
-
+ 
     train_list = '/home/haicu/ruolin.shen/DeepFinder_usage/deep-finder/spinach/pos_file0.xml'
     valid_list = '/home/haicu/ruolin.shen/DeepFinder_usage/deep-finder/spinach/pos_file1.xml'
     
@@ -78,7 +100,7 @@ if __name__=='__main__':
     train(path_data,path_target,valid_data,valid_target,train_list,valid_list,model_path,
           dim=dim,epoch=5,batch_size=4,mode='mask')
     # train center model 
-#     train(path_data,path_target,valid_data,valid_target,train_list,valid_list,model_path,
-#           dim=dim,epoch=20,batch_size=4,mode='center')
+     train(path_data,path_target,valid_data,valid_target,train_list,valid_list,model_path,
+           dim=dim,epoch=20,batch_size=4,mode='center')
 
    

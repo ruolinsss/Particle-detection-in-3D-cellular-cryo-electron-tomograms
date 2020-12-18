@@ -1,9 +1,9 @@
 import numpy as np
+from skimage.morphology import remove_small_objects  
 import time
 
-from utils.utils import read_mrc,write_mrc,write_txt
-from utils.postprocessing_helper import find_center,get_center_coords,remove_outlier
-from skimage.morphology import remove_small_objects  
+from test.utils.utils import read_mrc,write_mrc,write_txt
+from test.utils.postprocessing_helper import find_center,get_center_coords,remove_outlier
 
 def postprocessing(mask,
                    center,
@@ -91,15 +91,26 @@ def postprocessing(mask,
     
     
 if __name__=='__main__':
+    '''
+    Following information should be given:
+    
+    pred_mask_path: string
+        Path of the predictied mask (output from inference function).
+    pred_center_path: string
+        Path of the predictied center (output from inference function).
+    pred_path: sting
+        Path to save the post processed result. 
+    voxel_size: int
+        Voxel size for different dataset, 14.08 for spinach data
+    '''
     
     pred_mask_path = './output/mask_pred.mrc' 
     pred_center_path = './output/center_pred.mrc' 
     pred_path = 'output/'    
-    voxel_size = 14.08 # voxel size for different dataset, 14.08 for spinach data
+    voxel_size = 14.08
     
     mask,header = read_mrc(pred_mask_path)
-    center,_ = read_mrc(pred_center_path)
-    
+    center,_ = read_mrc(pred_center_path)   
     processed_mask,coords = postprocessing(mask,center)
     
     write_mrc(processed_mask,pred_path+'pred_tomo.mrc',header_dict=header)

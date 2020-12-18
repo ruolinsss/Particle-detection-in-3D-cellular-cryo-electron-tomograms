@@ -2,10 +2,10 @@ import sys
 sys.path.append('../../') # add parent folder to path
 import numpy as np
 import time
-from utils.models import my_model
-from utils.utils import read_mrc,write_mrc
+from test.utils.models import my_model
+from test.utils.utils import read_mrc,write_mrc
 
-def inference(tomo_path,weights_path,dim=160):
+def inference(tomo_path,weights_path,dim=160,mode='mask'):
     """
     This function enables to segment a tomogram. As tomograms are too large to be processed in one take, the tomogram is decomposed in smaller overlapping 3D patches. Modified from https://gitlab.inria.fr/serpico/deep-finder/-/blob/master/deepfinder/inference.py#L19
     
@@ -17,6 +17,9 @@ def inference(tomo_path,weights_path,dim=160):
             The path of the trained model.
         dim: int
             Patch size to be fed into the model.
+        mode: 'mask' or 'center' - default 'mask'
+            'mask': using simple UNet and dice loss to predict the mask of particles
+            'center': using simple UNet and mse loss to predict the center of particles
         
     Returns
     -------
@@ -93,15 +96,29 @@ def inference(tomo_path,weights_path,dim=160):
     
 
 if __name__=='__main__':
-    # takes around 5 min to run
+    '''
+    Following information should be given:
+    
+    tomo_path: string
+        Path of the testing data/
+    weights_path: string
+        Path of the saved trained model weights.
+    output_path: sting
+        Path to save the predicted mask/center. 
+    mode: string, 'mask' or 'center'
+        Whether you want to predict mask or center. Should be corresponding to the given weights_path.
+    patch_size: int
+        Inference patch size, must be multiple of 4  
+    '''
+    
     tomo_path    = '/home/haicu/ruolin.shen/projects/train/tomo17_re.mrc' 
     weights_path = '/home/haicu/ruolin.shen/projects/train/results/model_cell_center.h5' 
     output_path = 'output/'
     mode = 'center'
-    patch_size   = 160 # must be multiple of 4
+    patch_size   = 160 
     
     start = time.time()
-    pred, header_dict = inference(tomo_path,weights_path,dim=patch_size)
+    pred, header_dict = inference(tomo_path,weights_path,dim=patch_size,mode=mode)
     end = time.time()
     print("Model took %0.2f seconds to predict" % (end - start))
     write_mrc(pred,output_path+mode+'_pred.mrc',header_dict = header_dict)

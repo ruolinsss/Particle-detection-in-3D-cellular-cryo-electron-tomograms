@@ -112,23 +112,23 @@ def get_args():
                         help='The path of the trained CenterNet model weights.')
     parser.add_argument('--output_path', '-o', default='./output/',
                         help='The path of the saved mrc file and txt file.')    
-    parser.add_argument('--patch_size', '-ps', default='160',
+    parser.add_argument('--patch_size', '-ps',type=int, default=160,
                         help='Patch size to be fed into the inference model.')
-    parser.add_argument('--voxel_size', '-vs', default='14.08',
+    parser.add_argument('--voxel_size', '-vs',type=int, default=14.08,
                         help='Voxel size for different dataset, e.g. 14.08 for spinach data.')
-    parser.add_argument('--mask_threshold', '-mt', default='0.1',
+    parser.add_argument('--mask_threshold', '-mt',type=int, default=0.1,
                         help='Threshold to filter the small noise in predicted mask.')
-    parser.add_argument('--center_threshold', '-ct', default='0.1',
+    parser.add_argument('--center_threshold', '-ct', type=int, default=0.1,
                         help='Threshold to filter the small noise in predicted center.')
-    parser.add_argument('--remove_min_size', '-rs', default= '64',
+    parser.add_argument('--remove_min_size', '-rs',type=int, default= 64,
                         help='Particles smaller than this size will be removed.')
-    parser.add_argument('--check_center', '-check_center', default='True', 
+    parser.add_argument('--check_center', '-check_center',type=bool, default=True, 
                         help='Whether to use check center strategy in the post processing.')
-    parser.add_argument('--filter_outlier', '-filter_outlier', default='True',
+    parser.add_argument('--filter_outlier', '-filter_outlier',type=bool, default=True,
                         help='Whether to use filter outlier strategy in the post processing.')    
-    parser.add_argument('--neighbor_number', '-nn', default='3',
+    parser.add_argument('--neighbor_number', '-nn', type=int, default=3,
                         help='Define how many neighbor particles are considered in filter outlier strategy. Required when filter_outlier is True.')
-    parser.add_argument('--distance_threshold', '-dt', default='30',
+    parser.add_argument('--distance_threshold', '-dt',type=int, default=30,
                         help='Define the distance to be considered in filter outlier strategy. Required when filter_outlier is True.')
     return parser.parse_args()
 
