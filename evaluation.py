@@ -59,7 +59,17 @@ def evaluation(path_pred,path_target,output_path='output/',
         write_mrc(evaluated_gt,output_path+'evaluated_gt.mrc',header_dict=header)
 
 if __name__=='__main__':
+    '''
+    Following information should be given:
     
+    path_pred: string
+        Path of the instance labelled results.
+    path_target: string
+        Path of the instance labelled groundtruth. 
+        Otherwise you could also set instance_labelled=False in the evaluation function.
+    output_path: sting
+        Path to save the visually evaluated result. 
+    '''
     path_pred = '/home/haicu/ruolin.shen/projects/train/tomo17_processed_d.mrc'
     path_target = '/home/haicu/ruolin.shen/DeepFinder_usage/deep-finder/spinach_back/labelmap1.mrc'
     output_path = 'output/'

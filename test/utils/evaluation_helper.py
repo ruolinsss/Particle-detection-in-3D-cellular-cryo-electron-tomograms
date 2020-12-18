@@ -137,7 +137,7 @@ def get_visually_evaluation(seg,gt,TP_particle,merged_particle,TP_particle_gt,me
 
 def plot_visually_evaluation_example(evaluated_file,save_path,axis):
     '''
-    This function generates and saves a 2d slice plot to evaluate the result visually. In this plot, TP particles have color green, merged particles have color yellow while FN/FP have color red. Comparing the number of particles in different colors, we could have a feeling of how good this algorithm is.
+    This function generates and saves a 2d slice plot to evaluate the result visually. In this plot, TP particles have color green, merged particles have color yellow while FN/FP have color red. Comparing the number of particles in different colors, we could have a feeling of how good the results are.
     
     Input
     ----------
