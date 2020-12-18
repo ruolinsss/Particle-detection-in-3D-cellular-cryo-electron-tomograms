@@ -28,7 +28,7 @@ There are three optional post processing strategies:
 
 - Post processing 2: When we want to fuse the predicted masks and predicted centers, we will first find the local maxima in each particle centers, and then consider this pixel as a 'center' of one particle, every 'center' will have a different value. Then there are two methods to obtain the instance labelled mask. The first one (* *check_center* * =False) is, for every foreground pixel in the predicted mask, find the nearst predicted center and have the same value as the center. The second one (* *check_center* * =True) is, for each particles, check how many centers it has first. we will only split particles in mask if it has more than 2 centers. The second method could avoid the case when some parts of one particle belongs to a center outside.
 
-- Post processing 3: Since we want to find the particles on the membranes, they are always dense in some areas and will not be alone outside the membrane areas. Therefore we could filter out some alone particles to decrease the false positive. When filter_outlier is True, we will filter particles, which have fewer than * *neighbor_number* * nearest neighbor particles within * *distance_threshold* * pixels. For example, with the default value, we consider two particles within 30 pixels are neighbors. If one particle does not have more than 3 neighbors, it will be counted as outlier and will be removed.
+- Post processing 3: Since we want to find the particles on the membranes, they are always dense in some areas and will not be alone outside the membrane areas. Therefore we could filter out some alone particles to decrease the false positive. When filter_outlier is True, we will filter particles, which have fewer than *neighbor_number* nearest neighbor particles within *distance_threshold* pixels. For example, with the default value, we consider two particles within 30 pixels are neighbors. If one particle does not have more than 3 neighbors, it will be counted as outlier and will be removed.
 
 User could choose different post processing strategies and/or different parameters to get the final results. Using default values in post processing could possibly filter out many false positives while only lossing few true postives, which comes at the cost of higher computational time.
 
@@ -36,9 +36,9 @@ User could choose different post processing strategies and/or different paramete
 
 ### Training:
 
-For training the network ```train.py``` could be used. You should modify several parameters in the * *main* * function, such as * *path_data* * .
+For training the network ```train.py``` could be used. You should modify several parameters in the *main* function, such as *path_data* .
 
-After training, trained model weights from SegNet will be saved called * * ''mask_model.h5''* *  and trained model weights from CenterNet will be saved called * *''center_model.h5''* *  in the * *model_path* *.
+After training, trained model weights from SegNet will be saved called *mask_model.h5*  and trained model weights from CenterNet will be saved called *center_model.h5*  in the *model_path*.
 
 **Example run**:
 
@@ -77,7 +77,7 @@ python end2end_framework.py -tomo './tomo.mrc'
 
 #### Inference:
 
-User could also run inference (```test/inference.py```) individually and save the original output from the trained network (mask prediction or center prediction). You should modify several parameters in the * *main* * function, such as * *tomo_path* * .
+User could also run inference (```test/inference.py```) individually and save the original output from the trained network (mask prediction or center prediction). You should modify several parameters in the *main* function, such as *tomo_path* .
 
 **Example run**:
 
@@ -90,7 +90,7 @@ Here you could find an example output (2D slice) of trained SegNet and CenterNet
 
 #### Postprocessing:
 
-User could also run post processing (```test/postprocessing.py```) individually given the output of inference function. You should also modify several parameters in the * *main* * function, such as * *pred_mask_path* * .
+User could also run post processing (```test/postprocessing.py```) individually given the output of inference function. You should also modify several parameters in the *main* function, such as *pred_mask_path* .
 
 **Example run**:
 
