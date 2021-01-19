@@ -35,6 +35,7 @@ def model_loss(mode='mask'):
     '''
     def loss(y_true, y_pred):
         if mode == 'mask':
+            #return tf.keras.losses.binary_crossentropy(y_true, y_pred)
             return dice_coef_loss(y_true, y_pred)
         elif mode == 'center':
             mse = tf.keras.losses.MeanSquaredError()

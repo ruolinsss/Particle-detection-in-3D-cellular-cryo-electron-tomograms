@@ -1,3 +1,8 @@
+from __future__ import absolute_import, division, print_function, unicode_literals
+import tensorflow as tf
+sess = tf.test.is_gpu_available(cuda_only=False, min_cuda_compute_capability=None)
+print("GPU available? ", sess)
+
 import numpy as np
 import time
 import argparse
@@ -62,8 +67,8 @@ def run(tomo_path,
     start = time.time()
     
     # inference
-    pred_mask, header_dict = inference(tomo_path,mask_path,dim=patch_size)
-    pred_center, _ = inference(tomo_path,center_path,dim=patch_size)
+    pred_mask, header_dict = inference(tomo_path,mask_path,dim=patch_size,mode='mask')
+    pred_center, _ = inference(tomo_path,center_path,dim=patch_size,mode='center')
     
     # post processing
     post_mask,coords = postprocessing(pred_mask,pred_center,

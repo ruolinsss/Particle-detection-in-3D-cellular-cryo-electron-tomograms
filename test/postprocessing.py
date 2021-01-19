@@ -77,6 +77,9 @@ def postprocessing(mask,
     center = np.where(center >= center_threshold, center, 0)
 
     # post processing 2
+    print('center shape:',center.shape)
+    print('mask shape',mask.shape)
+    print('center dtype',center.dtype)
     processed_mask = find_center(mask,center,check_center=check_center)
     coords = get_center_coords(processed_mask)
 
@@ -92,6 +95,7 @@ def postprocessing(mask,
     
 if __name__=='__main__':
     '''
+    It takes around 2.5 hours to do post processing with default parameters.
     Following information should be given:
     
     pred_mask_path: string
@@ -102,6 +106,14 @@ if __name__=='__main__':
         Path to save the post processed result. 
     voxel_size: int
         Voxel size for different dataset, 14.08 for spinach data
+
+    AND the IMPORT code should be modified:
+    from test.utils.utils import read_mrc,write_mrc,write_txt
+    from test.utils.postprocessing_helper import find_center,get_center_coords,remove_outlier
+                 --->
+    from utils.utils import read_mrc,write_mrc,write_txt
+    from utils.postprocessing_helper import find_center,get_center_coords,remove_outlier
+
     '''
     
     pred_mask_path = './output/mask_pred.mrc' 
@@ -110,8 +122,12 @@ if __name__=='__main__':
     voxel_size = 14.08
     
     mask,header = read_mrc(pred_mask_path)
-    center,_ = read_mrc(pred_center_path)   
+    center,_ = read_mrc(pred_center_path) 
+    
+    start = time.time()
     processed_mask,coords = postprocessing(mask,center)
+    end = time.time()
+    print("Model took %0.2f seconds to post process" % (end - start))
     
     write_mrc(processed_mask,pred_path+'pred_tomo.mrc',header_dict=header)
     write_txt(coords,pred_path+'pred_center_coordinate.txt',voxel_size=voxel_size)

@@ -1,9 +1,9 @@
 # Particle-detection-in-3D-cellular-cryo-electron-tomograms
 
 ## What is this?
-This reporsitory provides an end to end framework to localize and detect particles in 3D cellular cryo-electron tomography. The main contribution in this repository is to solve the challenges of high density of the particles as well as the less-accurate groundtruth. The framework detects the localization of particles and gives instance label to each particle. 
+This repository provides an end to end framework to localize and detect particles in 3D cellular cryo-electron tomography. The main contribution in this repository is to solve the challenges of high density of the particles as well as the less-accurate groundtruth. The framework detects the localization of particles and gives instance label to each particle (i.e. different particles have differentvalues). 
  
-The framework first uses two trained networks to predict the particle masks (SegNet) and the particle centers (CenterNet), respectively. Then several post processing methods are applied to generate the instance labelled results and filter out outliers. Finally, instance labelled results in mrc file and the center coordinates of all detected particles in txt file are generated. They will be saved called pred_tomo.mrc and pred_center_coordinate.txt in the preset path.
+The framework first uses two trained networks to predict the particle masks (SegNet) and the particle centers (CenterNet), respectively. Then several post processing methods are applied to generate the instance labelled results and filter out outliers. Finally, instance labelled results in mrc file and the center coordinates of all detected particles in txt file are generated.
 
 ## Installation:
 
@@ -69,6 +69,7 @@ After training, an end-to-end framework could be used easily to detect the parti
 * -nn: Define how many neighbor particles are considered in filter outlier strategy. Required when filter_outlier is True.
 * -dt: Define the distance to be considered in filter outlier strategy. Required when filter_outlier is True.
 
+If using default parameters, the instance labelled results in mrc file and the center coordinates of all detected particles in txt file will be saved called pred_tomo.mrc and pred_center_coordinate.txt in the output folder.
 **Example run**:
 
 ```

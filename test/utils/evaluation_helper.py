@@ -3,7 +3,7 @@ import numpy as np
 import matplotlib as mpl
 import matplotlib.pyplot as plt
 
-def evaluation(seg,gt):
+def evaluation_func(seg,gt):
     """
     This function receives predicted particle file and instance labelled groundtruth to do the evaluation. This function takes ~45 min for mask with size of (464, 928, 928) in GPU.
     

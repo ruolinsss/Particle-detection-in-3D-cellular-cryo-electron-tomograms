@@ -1,4 +1,10 @@
 # keras 2.2.4 conda env instantdl
+from __future__ import absolute_import, division, print_function, unicode_literals
+import tensorflow as tf
+sess = tf.test.is_gpu_available(cuda_only=False, min_cuda_compute_capability=None)
+print("GPU available? ", sess)
+
+
 import numpy as np
 from keras.optimizers import Adam, SGD, RMSprop
 from keras.callbacks import ModelCheckpoint, EarlyStopping,CSVLogger, ReduceLROnPlateau
@@ -10,7 +16,7 @@ from test.utils.data_generators import DataGenerator
 
 
 def train(path_data,path_target,valid_data,valid_target,train_list,valid_list,model_path,
-          dim=56,epoch=10,batch_size=4,mode='mask'):
+          dim=56,epoch=10,batch_size=4,lr=0.0001,mode='mask'):
     """
     This function trains the network.
     
@@ -40,17 +46,18 @@ def train(path_data,path_target,valid_data,valid_target,train_list,valid_list,mo
     Returns
     -------
     """
-    training_generator = DataGenerator(path_data, path_target, train_list, mode=mode, dim=dim, batch_size=batch_size)
-    validation_generator = DataGenerator(valid_data, valid_target, valid_list, mode=mode, dim=dim, batch_size=batch_size)
+
+    training_generator = DataGenerator(path_data, path_target, train_list, mode=mode, dim=dim, batch_size=batch_size,augmentation=True)
+    validation_generator = DataGenerator(valid_data, valid_target, valid_list, mode=mode, dim=dim, batch_size=batch_size,augmentation=False)
 
     model = my_model(dim, mode = mode)
     model.summary()
-    opt = Adam(lr=0.0001, beta_1=0.95, beta_2=0.99)
+    opt = Adam(lr=lr, beta_1=0.95, beta_2=0.99)
     model.compile(optimizer=opt, loss = model_loss(mode=mode))
 
-    Early_Stopping = EarlyStopping(monitor='val_loss', patience=5, mode='auto', verbose=0)
+    Early_Stopping = EarlyStopping(monitor='val_loss', patience=10, mode='auto', verbose=0)
     reduce_lr = ReduceLROnPlateau(monitor='val_loss', factor=0.2,
-                                  patience=5, min_lr=0.0000001)
+                                  patience=5, min_lr=0.000001)
     model_checkpoint = ModelCheckpoint(filepath = model_path+'/'+mode+'_model.h5', verbose=1, save_best_only=True) 
     callbacks_list = [model_checkpoint, Early_Stopping,reduce_lr]
     print('begin training ...')
@@ -84,23 +91,29 @@ if __name__=='__main__':
         Training patch size    
     '''
         
-    path_data = ['/home/haicu/ruolin.shen/DeepFinder_usage/deep-finder/spinach/Tomo32_denoised_bin4.mrc']  
-    path_target = ['/home/haicu/ruolin.shen/DeepFinder_usage/deep-finder/spinach_back/labelmap0.mrc'] 
+    path_data = ['/home/haicu/ruolin.shen/DeepFinder_usage/deep-finder/spinach/Tomo32_denoised_bin4.mrc',
+                '/home/haicu/ruolin.shen/DeepFinder_usage/deep-finder/spinach/Tomo17_bin4_denoised.mrc']  
+    path_target = ['/home/haicu/ruolin.shen/DeepFinder_usage/deep-finder/spinach_back/labelmap0.mrc',
+                  '/home/haicu/ruolin.shen/DeepFinder_usage/deep-finder/spinach_back/labelmap1.mrc'] 
 
-    valid_data = ['/home/haicu/ruolin.shen/DeepFinder_usage/deep-finder/spinach/Tomo17_bin4_denoised.mrc'] 
-    valid_target = ['/home/haicu/ruolin.shen/DeepFinder_usage/deep-finder/spinach_back/labelmap1.mrc']
- 
-    train_list = '/home/haicu/ruolin.shen/DeepFinder_usage/deep-finder/spinach/pos_file0.xml'
-    valid_list = '/home/haicu/ruolin.shen/DeepFinder_usage/deep-finder/spinach/pos_file1.xml'
+#     valid_data = ['/home/haicu/ruolin.shen/DeepFinder_usage/deep-finder/spinach/Tomo17_bin4_denoised.mrc'] 
+#     valid_target = ['/home/haicu/ruolin.shen/DeepFinder_usage/deep-finder/spinach_back/labelmap1.mrc']
+    
+#     train_list = ['/home/haicu/ruolin.shen/DeepFinder_usage/deep-finder/spinach/pos_file0.xml',
+#                   '/home/haicu/ruolin.shen/DeepFinder_usage/deep-finder/spinach/pos_file1.xml']
+#     valid_list = '/home/haicu/ruolin.shen/DeepFinder_usage/deep-finder/spinach/pos_file1.xml'
+    
+    train_list = '/home/haicu/ruolin.shen/projects/3dpd/train.xml'
+    valid_list = '/home/haicu/ruolin.shen/projects/3dpd/val.xml'
     
     model_path = 'output'
     dim = 56
     
     # train mask model first
-    train(path_data,path_target,valid_data,valid_target,train_list,valid_list,model_path,
-          dim=dim,epoch=5,batch_size=4,mode='mask')
+    train(path_data,path_target,path_data,path_target,train_list,valid_list,model_path,
+          dim=dim,epoch=100,batch_size=4,mode='mask')
     # train center model 
-     train(path_data,path_target,valid_data,valid_target,train_list,valid_list,model_path,
-           dim=dim,epoch=20,batch_size=4,mode='center')
+    train(path_data,path_target,path_data,path_target,train_list,valid_list,model_path,
+          dim=dim,epoch=100,batch_size=4,lr=0.00001,mode='center')
 
-   
+

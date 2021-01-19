@@ -1,7 +1,8 @@
 import sys
-sys.path.append('../../') # add parent folder to path
+sys.path.append('../') # add parent folder to path
 import numpy as np
 import time
+
 from test.utils.models import my_model
 from test.utils.utils import read_mrc,write_mrc
 
@@ -97,6 +98,7 @@ def inference(tomo_path,weights_path,dim=160,mode='mask'):
 
 if __name__=='__main__':
     '''
+    It takes around 180s to run this inference function. 
     Following information should be given:
     
     tomo_path: string
@@ -109,10 +111,17 @@ if __name__=='__main__':
         Whether you want to predict mask or center. Should be corresponding to the given weights_path.
     patch_size: int
         Inference patch size, must be multiple of 4  
+
+    AND the IMPORT code should be modified:
+    from test.utils.models import my_model  
+    from test.utils.utils import read_mrc,write_mrc
+                 --->
+    from utils.models import my_model
+    from utils.utils import read_mrc,write_mrc
     '''
     
-    tomo_path    = '/home/haicu/ruolin.shen/projects/train/tomo17_re.mrc' 
-    weights_path = '/home/haicu/ruolin.shen/projects/train/results/model_cell_center.h5' 
+    tomo_path    = '/home/haicu/ruolin.shen/DeepFinder_usage/deep-finder/spinach/Tomo17_bin4_denoised.mrc' 
+    weights_path = '/home/haicu/ruolin.shen/projects/3dpd/output/center_model.h5' 
     output_path = 'output/'
     mode = 'center'
     patch_size   = 160 

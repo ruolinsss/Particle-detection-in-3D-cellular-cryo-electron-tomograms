@@ -81,7 +81,9 @@ def find_center(mask,center,check_center=False):
         final: ndarray
             The propossed results. In final, every particle has a different value.
     """
-    _,coords = local_maxima_3D(center,1)
+    print('center dtype',center.dtype)
+    print('center shape',center.shape)
+    _,coords = local_maxima_3D(center.astype(np.float32),1)
     if check_center == False:
         coords_mask = np.asarray(np.where(mask>0)).T
         _,indexes = do_kdtree(coords,coords_mask)

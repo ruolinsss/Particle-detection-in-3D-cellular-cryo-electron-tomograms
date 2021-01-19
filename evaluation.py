@@ -1,7 +1,7 @@
 from skimage.measure import label
 import time
 
-from test.utils.evaluation_helper import evaluation, get_visually_evaluation
+from test.utils.evaluation_helper import evaluation_func, get_visually_evaluation
 from test.utils.utils import read_mrc,write_mrc
 
 def evaluation(path_pred,path_target,output_path='output/',
@@ -41,25 +41,25 @@ def evaluation(path_pred,path_target,output_path='output/',
     Returns
     -------
     """
-        
     pred,header = read_mrc(path_pred)
     gt,_ = read_mrc(path_target)
 
     if instance_labelled == False:
         gt = label(gt)
 
-    TP_particle, merged_particle, TP_particle_gt, merged_particle_gt = evaluation(pred, gt)
+    TP_particle, merged_particle, TP_particle_gt, merged_particle_gt = evaluation_func(pred, gt)
     evaluated_tomo, evaluated_gt = get_visually_evaluation(pred,gt,
                                                           TP_particle, merged_particle,
                                                           TP_particle_gt, merged_particle_gt,
                                                           plot=plot,save_path=output_path,axis=axis)
     
-    if write == True
+    if write == True:
         write_mrc(evaluated_tomo,output_path+'evaluated_tomo.mrc',header_dict=header)
         write_mrc(evaluated_gt,output_path+'evaluated_gt.mrc',header_dict=header)
 
 if __name__=='__main__':
     '''
+    It takes around 40 mins to run.
     Following information should be given:
     
     path_pred: string
@@ -70,8 +70,11 @@ if __name__=='__main__':
     output_path: sting
         Path to save the visually evaluated result. 
     '''
-    path_pred = '/home/haicu/ruolin.shen/projects/train/tomo17_processed_d.mrc'
+    path_pred = '/home/haicu/ruolin.shen/projects/3dpd/output/pred_tomo.mrc'
     path_target = '/home/haicu/ruolin.shen/DeepFinder_usage/deep-finder/spinach_back/labelmap1.mrc'
     output_path = 'output/'
     
-    pred, header_dict = evaluation(path_pred,path_target,output_path=output_path)
+    start = time.time()
+    evaluation(path_pred,path_target,output_path=output_path)
+    end = time.time()
+    print("Model took %0.2f seconds to post process" % (end - start))
