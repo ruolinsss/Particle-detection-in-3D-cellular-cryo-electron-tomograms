@@ -6,7 +6,11 @@ This repository provides an end to end framework to localize and detect particle
 The framework first uses two trained networks to predict the particle masks (SegNet) and the particle centers (CenterNet), respectively. Then several post processing methods are applied to generate the instance labelled results and filter out outliers. Finally, instance labelled results in mrc file and the center coordinates of all detected particles in txt file are generated.
 
 ## Installation:
-
+To install the necessary packages for this framework run:
+```
+pip install -r requirements.txt
+```
+If you are using conda first install pip by: ```conda install pip```
 ## Data decription and preprocessing:
 
 The original data from biologists includes a mrc file describing the raw cryo-electron tomography data and several xml files used to generate groundtruth, which describe each particle's position, orientation, class and the index of the tomogram that contains it. Using this information, 3D label maps could be generated with particle masks with different shapes and orientations around each manually labeled position (this algorithm is not included in this repository). 

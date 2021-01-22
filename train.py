@@ -111,9 +111,9 @@ if __name__=='__main__':
     
     # train mask model first
     train(path_data,path_target,path_data,path_target,train_list,valid_list,model_path,
-          dim=dim,epoch=100,batch_size=4,mode='mask')
+          dim=dim,epoch=500,batch_size=8,lr=0.0005,mode='mask')
     # train center model 
     train(path_data,path_target,path_data,path_target,train_list,valid_list,model_path,
-          dim=dim,epoch=100,batch_size=4,lr=0.00001,mode='center')
+          dim=dim,epoch=500,batch_size=8,lr=0.00001,mode='center')
 
 
