@@ -139,12 +139,5 @@ Below shows one example of the final files you could get. After running ```end2e
 
 <img src="https://github.com/HelmholtzAI-Consultants-Munich/Particle-detection-in-3D-cellular-cryo-electron-tomograms/blob/dev/README_files/Final_result.png" width="1000">
 
-The performance of the different post processing strategies on the test set is given here:
 
-|| Precision  | Recall     | Runtime in GPU |
-|---------------| ---------- | ---------- | -------------- |
-|Baseline       |            |            | ~ 1h           |
-|check_center   |            |            |+ ~ 20min       |
-|filter_outlier |            |            |+ ~ 10min       |
-|Combined       |            |            |+ ~ 30min       |
 
